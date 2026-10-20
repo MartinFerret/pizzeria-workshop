@@ -1,0 +1,707 @@
+/* =====================================================================
+   certiPizza - the pizza
+   The plate, the pizza and the five toppings, drawn in CSS: gradients,
+   shadows, and one grain of noise written inline (an SVG filter in a
+   data URL, no image file). The grain is what keeps the gradients from
+   looking like vector art.
+
+   Light comes from the top left everywhere. Sizes are percentages of
+   the pizza, shadows and blurs are in cqmin against the pizza as a
+   container, so the whole drawing scales with it.
+
+   The spots (char, oil, herbs, fat) are scattered by a seeded script,
+   not by hand: irregular, but the same on every load.
+   ===================================================================== */
+
+/* --- the plate ------------------------------------------------------- */
+/* The white plate of the hero photograph: a flat well, a raised rim with
+   a thin grey line, and a soft shadow thrown down and to the left. */
+
+.board {
+  position: relative;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side,
+    #fff 0 90%,
+    #eceeed 92%,
+    #fff 94.5%,
+    #f5f6f6 98%,
+    #e1e3e3 100%);
+  box-shadow:
+    -26px 30px 56px -20px rgba(11, 28, 51, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* --- the pizza -------------------------------------------------------- */
+
+.pizza {
+  --grain-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .1 0 0 0 0 .04 1.05 0 0 0 -.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --grain-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .96 0 0 0 0 .88 1.1 0 0 0 -.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --grain-flour: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .96 0 0 0 0 .88 .8 0 0 0 -.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  position: relative;
+  container-type: size;
+  aspect-ratio: 1;
+  /* a hand-stretched pizza is never a true circle */
+  border-radius: 49.4% 50.6% 50.8% 49.2% / 50.7% 49.3% 50.5% 49.5%;
+  background-image:
+    /* the rim rises out of the sauce: a shadow at its foot */
+    radial-gradient(circle closest-side at 50% 50%,
+      transparent 0 80.5%,
+      rgba(96,34,10,.34) 83%,
+      rgba(96,34,10,.12) 85%,
+      transparent 87%),
+    /* light on the sauce, from the top left */
+    radial-gradient(ellipse 60% 50% at 34% 30%, rgba(255,170,120,.18), transparent 70%),
+    /* shine on the oil */
+    radial-gradient(ellipse 0.62% 0.59% at 56.53% 49.77%, rgba(255,236,214,.5) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.05% 1.14% at 33.21% 48.49%, rgba(255,244,228,.42) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.49% 2.04% at 36.08% 29.09%, rgba(255,244,228,.42) 0 25%, transparent 80%),
+    radial-gradient(ellipse 0.94% 1.18% at 37.15% 18.85%, rgba(255,236,214,.5) 0 25%, transparent 80%),
+    radial-gradient(ellipse 0.65% 0.40% at 33.44% 61.30%, rgba(255,236,214,.5) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.03% 0.57% at 27.51% 27.39%, rgba(255,244,228,.42) 0 25%, transparent 80%),
+    radial-gradient(ellipse 0.88% 0.63% at 69.13% 29.77%, rgba(255,244,228,.42) 0 25%, transparent 80%),
+    radial-gradient(ellipse 0.87% 0.44% at 64.05% 54.10%, rgba(255,244,228,.42) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.15% 0.83% at 82.57% 42.03%, rgba(255,244,228,.42) 0 25%, transparent 80%),
+    radial-gradient(ellipse 0.94% 0.54% at 52.92% 64.25%, rgba(255,244,228,.42) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.10% 0.56% at 34.76% 49.74%, rgba(255,244,228,.42) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.19% 1.01% at 55.27% 38.23%, rgba(255,244,228,.42) 0 25%, transparent 80%),
+    /* oregano */
+    radial-gradient(ellipse 0.51% 0.36% at 86.06% 47.28%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.57% 0.79% at 28.88% 54.02%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.64% 0.79% at 63.79% 28.41%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.52% 0.60% at 56.50% 38.96%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.71% 0.56% at 34.52% 52.15%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.78% 0.89% at 31.40% 64.27%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.62% 0.57% at 56.14% 49.73%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.79% 0.86% at 70.42% 76.73%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.36% 0.44% at 65.27% 72.75%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.77% 0.69% at 34.17% 28.31%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.46% 0.35% at 57.83% 34.91%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.59% 0.74% at 51.81% 28.95%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.56% 0.57% at 68.58% 38.21%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.58% 0.56% at 18.87% 66.95%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.70% 0.73% at 15.51% 47.71%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.68% 0.68% at 61.94% 72.49%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.57% 0.68% at 38.88% 25.45%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.37% 0.22% at 65.16% 55.66%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.76% 0.68% at 20.14% 37.80%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.44% 0.33% at 78.40% 45.20%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.77% 0.87% at 24.98% 44.69%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.44% 0.40% at 80.93% 33.70%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.38% 0.27% at 67.76% 67.02%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.41% 0.49% at 54.73% 69.80%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.46% 0.29% at 36.11% 32.44%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.53% 0.50% at 56.86% 85.45%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.54% 0.52% at 57.36% 37.08%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.39% 0.32% at 30.55% 60.49%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.36% 0.29% at 26.85% 41.82%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.40% 0.53% at 39.78% 84.80%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.47% 0.25% at 61.79% 47.88%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.54% 0.71% at 48.29% 63.21%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.58% 0.55% at 27.49% 65.10%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.66% 0.58% at 57.51% 54.73%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.39% 0.29% at 49.43% 54.77%, rgba(38,46,18,.75) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.74% 0.67% at 55.91% 42.50%, rgba(70,82,34,.7) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.76% 0.81% at 73.90% 49.14%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.40% 0.26% at 32.19% 46.96%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.63% 0.62% at 64.98% 82.43%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    radial-gradient(ellipse 0.43% 0.35% at 43.50% 75.34%, rgba(52,64,26,.8) 0 40%, transparent 85%),
+    /* crushed tomato */
+    radial-gradient(ellipse 1.41% 1.81% at 62.66% 63.37%, rgba(214,52,30,.75) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.26% 0.79% at 61.76% 70.29%, rgba(186,36,20,.7) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.44% 1.18% at 62.82% 35.27%, rgba(186,36,20,.7) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.13% 0.80% at 63.87% 46.23%, rgba(214,52,30,.75) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.14% 0.86% at 83.63% 52.55%, rgba(214,52,30,.75) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.64% 2.22% at 30.37% 60.96%, rgba(226,78,40,.6) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.75% 2.04% at 72.85% 22.09%, rgba(186,36,20,.7) 0 40%, transparent 82%),
+    radial-gradient(ellipse 2.04% 2.48% at 76.38% 30.72%, rgba(186,36,20,.7) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.53% 1.31% at 31.37% 63.88%, rgba(214,52,30,.75) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.11% 0.90% at 65.41% 56.94%, rgba(214,52,30,.75) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.60% 2.16% at 72.29% 66.71%, rgba(226,78,40,.6) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.70% 1.08% at 84.15% 55.52%, rgba(186,36,20,.7) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.52% 0.92% at 77.60% 42.07%, rgba(186,36,20,.7) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.53% 0.88% at 75.23% 48.91%, rgba(214,52,30,.75) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.52% 1.71% at 49.93% 18.16%, rgba(226,78,40,.6) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.59% 1.00% at 85.70% 55.22%, rgba(226,78,40,.6) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.29% 1.39% at 77.64% 33.45%, rgba(214,52,30,.75) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.38% 0.90% at 43.73% 32.16%, rgba(214,52,30,.75) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.33% 0.93% at 18.02% 43.36%, rgba(214,52,30,.75) 0 40%, transparent 82%),
+    radial-gradient(ellipse 1.86% 1.31% at 61.55% 18.59%, rgba(226,78,40,.6) 0 40%, transparent 82%),
+    radial-gradient(ellipse 2.19% 2.65% at 18.40% 51.43%, rgba(186,36,20,.7) 0 40%, transparent 82%),
+    radial-gradient(ellipse 2.14% 1.93% at 48.23% 80.74%, rgba(226,78,40,.6) 0 40%, transparent 82%),
+    /* where the sauce lies thick */
+    radial-gradient(ellipse 7.87% 7.66% at 44.71% 34.06%, rgba(140,26,10,.24) 0 30%, transparent 76%),
+    radial-gradient(ellipse 9.90% 6.00% at 47.65% 31.91%, rgba(140,26,10,.24) 0 30%, transparent 76%),
+    radial-gradient(ellipse 9.67% 8.50% at 60.13% 67.11%, rgba(120,18,8,.28) 0 30%, transparent 76%),
+    radial-gradient(ellipse 9.38% 7.34% at 52.35% 24.37%, rgba(140,26,10,.24) 0 30%, transparent 76%),
+    radial-gradient(ellipse 7.28% 9.14% at 28.53% 35.53%, rgba(140,26,10,.24) 0 30%, transparent 76%),
+    radial-gradient(ellipse 5.30% 6.00% at 22.66% 54.49%, rgba(140,26,10,.24) 0 30%, transparent 76%),
+    radial-gradient(ellipse 8.34% 4.34% at 45.45% 70.62%, rgba(140,26,10,.24) 0 30%, transparent 76%),
+    radial-gradient(ellipse 7.47% 5.20% at 33.65% 70.95%, rgba(140,26,10,.24) 0 30%, transparent 76%),
+    /* pools of orange oil */
+    radial-gradient(ellipse 10.56% 5.97% at 43.74% 62.50%, rgba(238,116,34,.32) 0 30%, transparent 74%),
+    radial-gradient(ellipse 9.55% 5.10% at 44.24% 56.48%, rgba(246,140,48,.26) 0 30%, transparent 74%),
+    radial-gradient(ellipse 9.86% 5.45% at 34.62% 58.69%, rgba(238,116,34,.32) 0 30%, transparent 74%),
+    radial-gradient(ellipse 10.08% 5.60% at 77.04% 40.73%, rgba(246,140,48,.26) 0 30%, transparent 74%),
+    radial-gradient(ellipse 9.90% 6.13% at 66.11% 55.19%, rgba(246,140,48,.26) 0 30%, transparent 74%),
+    radial-gradient(ellipse 8.16% 10.07% at 57.62% 59.73%, rgba(238,116,34,.32) 0 30%, transparent 74%),
+    radial-gradient(ellipse 7.32% 4.30% at 71.70% 66.41%, rgba(238,116,34,.32) 0 30%, transparent 74%),
+    radial-gradient(ellipse 9.47% 9.27% at 23.96% 38.85%, rgba(246,140,48,.26) 0 30%, transparent 74%),
+    radial-gradient(ellipse 8.53% 6.17% at 16.21% 57.42%, rgba(238,116,34,.32) 0 30%, transparent 74%),
+    /* San Marzano: deep red, a little lighter where it thins at the rim */
+    radial-gradient(circle closest-side at 50% 50%,
+      #c8291a 0 28%,
+      #bd2316 50%,
+      #c52b18 66%,
+      #cd3a1d 75%,
+      #d4502a 80.5%,
+      rgba(214,104,50,.55) 82.5%,
+      rgba(214,104,50,0) 84.5%),
+    /* the cornicione: a puffed ring, pale gold on top, baked at the edge */
+    radial-gradient(circle closest-side at 50% 50%,
+      #d3924a 0 82%,
+      #e0a458 84%,
+      #eebd74 87%,
+      #f6d396 90%,
+      #f0c27b 93%,
+      #e5a453 95.5%,
+      #d3873b 97.8%,
+      #b26a2a 99.4%,
+      #8e5221 100%);
+  box-shadow:
+    0 0.4cqmin 0.8cqmin rgba(60,30,8,.35),
+    0 2.2cqmin 3.6cqmin -1.2cqmin rgba(60,30,8,.45),
+    inset 0 -1.2cqmin 2.4cqmin rgba(120,58,16,.35),
+    inset 0 1cqmin 2cqmin rgba(255,238,200,.35);
+  transition: width 260ms cubic-bezier(.22,.9,.32,1);
+}
+
+/* the rim, baked in a wood oven: leopard spots, blisters, flour */
+.pizza::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    /* light on the top of the rim */
+    radial-gradient(circle closest-side at 47% 46%,
+      transparent 0 86%,
+      rgba(255,244,214,.34) 89.5%,
+      transparent 93%),
+    radial-gradient(ellipse 0.52% 0.49% at 90.86% 73.22%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.48% 0.53% at 50.62% 1.79%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.51% 0.57% at 80.52% 11.70%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.35% 0.40% at 82.60% 85.43%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.33% 0.37% at 31.68% 6.82%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.35% 0.39% at 76.15% 90.52%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.42% 0.41% at 48.73% 98.72%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.31% 0.22% at 32.43% 87.90%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.31% 0.34% at 29.38% 6.41%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.55% 0.68% at 54.79% 8.41%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.56% 0.37% at 6.88% 34.42%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.38% 0.32% at 46.64% 5.84%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.40% 0.29% at 19.83% 86.35%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.36% 0.44% at 36.96% 93.46%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.33% 0.26% at 44.99% 3.16%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.27% 0.24% at 11.55% 71.87%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.37% 0.25% at 91.11% 55.80%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.36% 0.24% at 6.42% 40.51%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.30% 0.36% at 17.92% 18.35%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.27% 0.19% at 38.15% 6.71%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.25% 0.26% at 14.51% 75.12%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.46% 0.43% at 12.04% 24.30%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.27% 0.25% at 50.46% 98.27%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.57% 0.38% at 66.79% 89.25%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.46% 0.43% at 76.93% 83.52%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.36% 0.28% at 66.60% 10.54%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.42% 0.40% at 96.90% 48.25%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.41% 0.45% at 76.33% 10.96%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.34% 0.35% at 72.13% 93.69%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.49% 0.57% at 25.88% 90.48%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.40% 0.45% at 45.42% 95.42%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.56% 0.37% at 36.30% 96.49%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.54% 0.40% at 73.32% 92.28%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.56% 0.45% at 48.94% 6.06%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.57% 0.71% at 15.20% 82.90%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.25% 0.16% at 5.22% 57.92%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.32% 0.33% at 10.40% 31.26%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.26% 0.18% at 10.75% 32.96%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.26% 0.16% at 26.11% 85.22%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.27% 0.27% at 34.63% 5.56%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.44% 0.45% at 65.24% 96.21%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.29% 0.18% at 83.66% 76.83%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.35% 0.23% at 71.01% 8.81%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.35% 0.29% at 62.08% 5.25%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.35% 0.37% at 93.05% 55.69%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.46% 0.42% at 89.96% 24.76%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.39% 0.35% at 19.27% 21.76%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.44% 0.32% at 23.27% 88.40%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.40% 0.38% at 11.05% 30.29%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.25% 0.23% at 53.73% 1.31%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.59% 0.58% at 33.90% 5.11%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.54% 0.65% at 12.33% 29.90%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.47% 0.31% at 7.68% 50.45%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.39% 0.33% at 19.35% 18.20%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.38% 0.30% at 9.09% 71.78%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.38% 0.45% at 86.82% 23.68%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.46% 0.48% at 89.84% 35.35%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.30% 0.35% at 24.51% 85.80%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.52% 0.51% at 71.69% 89.19%, rgba(255,252,244,.8) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.49% 0.46% at 26.66% 90.01%, rgba(255,250,238,.65) 0 45%, transparent 85%),
+    radial-gradient(ellipse 0.95% 0.89% at 35.10% 92.00%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.20% 1.02% at 24.22% 10.73%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.69% 0.69% at 41.60% 4.91%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.21% 1.22% at 95.79% 62.93%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.22% 1.33% at 36.10% 6.23%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.15% 1.13% at 74.12% 9.17%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.65% 0.40% at 30.82% 7.24%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.77% 0.69% at 18.61% 13.43%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.03% 0.94% at 17.67% 16.53%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.24% 1.47% at 7.84% 61.69%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.08% 0.82% at 26.41% 13.18%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.09% 0.82% at 75.32% 13.31%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.78% 0.71% at 95.34% 43.03%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.99% 0.72% at 39.86% 92.44%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.08% 0.86% at 76.84% 85.71%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.86% 1.06% at 80.63% 84.07%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.70% 0.65% at 33.38% 6.27%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.29% 1.24% at 3.84% 60.04%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.46% 0.42% at 97.63% 43.41%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.68% 0.50% at 94.73% 40.91%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.09% 0.84% at 89.12% 69.81%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.88% 1.04% at 81.95% 85.15%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.19% 1.02% at 19.61% 84.39%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.83% 0.66% at 95.85% 51.03%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.55% 0.45% at 10.86% 72.76%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.55% 0.66% at 50.22% 2.40%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.67% 0.43% at 96.97% 53.47%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.76% 0.66% at 96.34% 49.65%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.49% 0.51% at 77.29% 14.47%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.68% 0.63% at 91.04% 32.42%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.81% 0.50% at 56.87% 3.18%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.92% 0.67% at 11.34% 78.07%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.83% 0.91% at 94.81% 64.40%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.23% 1.17% at 81.26% 16.49%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.70% 0.76% at 5.57% 57.85%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.71% 0.68% at 47.02% 96.58%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.51% 0.48% at 84.03% 81.86%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.73% 0.80% at 6.60% 35.78%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.53% 0.43% at 78.36% 84.11%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.14% 0.83% at 30.92% 91.02%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.80% 0.75% at 49.90% 4.54%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.87% 0.85% at 44.02% 96.78%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.99% 1.14% at 82.29% 82.65%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.78% 0.79% at 90.01% 76.31%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.19% 0.73% at 95.66% 36.40%, rgba(52,28,12,.8) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.13% 1.39% at 7.90% 71.38%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.24% 1.41% at 95.36% 50.05%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.54% 0.38% at 93.97% 42.25%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.15% 1.22% at 93.26% 42.28%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.45% 0.31% at 90.70% 74.07%, rgba(40,22,10,.75) 0 40%, transparent 86%),
+    radial-gradient(ellipse 0.71% 0.48% at 90.85% 27.52%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 1.10% 0.73% at 5.13% 41.95%, rgba(70,38,16,.7) 0 40%, transparent 86%),
+    radial-gradient(ellipse 2.42% 1.73% at 64.83% 90.52%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 1.61% 1.63% at 57.18% 4.64%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 1.83% 1.34% at 58.99% 93.62%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 3.06% 3.46% at 94.91% 61.00%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.59% 1.69% at 12.54% 74.11%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 1.70% 1.13% at 62.74% 6.45%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.45% 2.51% at 27.61% 12.67%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.05% 1.64% at 34.96% 7.88%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.17% 1.89% at 32.64% 92.02%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.25% 2.73% at 22.53% 14.82%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.91% 2.52% at 86.51% 24.04%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 1.62% 1.56% at 7.74% 60.59%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.19% 2.04% at 88.75% 74.26%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 1.87% 1.21% at 24.85% 85.57%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 3.15% 2.29% at 3.50% 52.78%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 3.06% 2.46% at 72.42% 13.30%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.70% 3.19% at 89.53% 73.81%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 1.91% 1.74% at 16.90% 18.50%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 1.85% 1.54% at 95.60% 62.23%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 3.04% 1.90% at 50.85% 96.20%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.22% 1.99% at 28.14% 11.44%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.00% 1.70% at 23.77% 14.36%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 1.64% 1.64% at 7.62% 64.72%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.59% 2.93% at 6.16% 59.72%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 1.71% 1.42% at 66.59% 8.51%, rgba(255,242,214,.38) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.42% 1.51% at 87.63% 74.45%, rgba(255,236,196,.45) 0 30%, transparent 76%),
+    radial-gradient(ellipse 2.38% 1.77% at 4.48% 42.96%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.59% 2.81% at 95.81% 50.33%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.55% 1.92% at 20.63% 12.35%, rgba(140,72,24,.45) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.90% 1.84% at 94.34% 58.25%, rgba(140,72,24,.45) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.44% 1.87% at 3.43% 50.49%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.59% 2.72% at 10.10% 70.54%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.00% 2.23% at 9.07% 72.32%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.59% 1.89% at 74.30% 14.31%, rgba(140,72,24,.45) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.12% 2.47% at 55.30% 93.72%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.05% 1.78% at 6.17% 51.17%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.44% 2.19% at 93.26% 66.01%, rgba(140,72,24,.45) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.70% 1.09% at 93.02% 42.94%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.23% 1.50% at 5.54% 64.56%, rgba(140,72,24,.45) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.97% 2.38% at 90.58% 31.40%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.05% 3.49% at 6.37% 59.00%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.76% 1.15% at 9.40% 65.36%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.53% 2.59% at 91.80% 38.00%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.21% 2.11% at 55.23% 5.78%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.44% 2.49% at 5.74% 57.45%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.86% 2.18% at 46.38% 4.69%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.67% 1.07% at 54.50% 7.21%, rgba(140,72,24,.45) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.40% 2.79% at 47.93% 96.94%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.69% 1.83% at 25.50% 91.44%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.61% 1.75% at 32.01% 90.53%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.25% 2.18% at 90.75% 35.76%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.37% 1.81% at 96.38% 37.09%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.59% 1.57% at 67.24% 10.02%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.90% 1.43% at 34.66% 94.08%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.79% 2.60% at 4.24% 61.51%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.73% 1.08% at 50.80% 5.82%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.45% 1.64% at 8.01% 37.91%, rgba(140,72,24,.45) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.79% 1.66% at 45.96% 93.08%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.87% 1.68% at 93.10% 42.37%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 3.15% 3.44% at 54.33% 95.61%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.35% 2.53% at 37.51% 94.25%, rgba(140,72,24,.45) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.07% 1.62% at 9.30% 66.29%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.10% 1.60% at 66.33% 89.95%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.91% 3.62% at 55.52% 97.00%, rgba(140,72,24,.45) 0 25%, transparent 80%),
+    radial-gradient(ellipse 2.06% 1.84% at 97.72% 51.35%, rgba(160,90,34,.38) 0 25%, transparent 80%),
+    radial-gradient(ellipse 1.84% 1.33% at 93.02% 61.15%, rgba(118,58,20,.4) 0 25%, transparent 80%),
+    var(--grain-flour);
+  background-size: auto, auto, auto, auto, auto, 7% 7%;
+  /* the grain belongs to the dough: keep it on the rim */
+  -webkit-mask: radial-gradient(circle closest-side, transparent 0 81%, #000 85%);
+  mask: radial-gradient(circle closest-side, transparent 0 81%, #000 85%);
+}
+
+/* one grain and one sheen over everything, toppings included, so the
+   whole pizza reads as a single photograph */
+.pizza::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 42% 30% at 30% 22%, rgba(255,248,232,.16), transparent 66%),
+    radial-gradient(circle closest-side at 50% 50%, transparent 0 82%, rgba(70,30,6,.14) 100%),
+    var(--grain-dark),
+    var(--grain-light);
+  background-size: auto, auto, 9% 9%, 7% 7%;
+  opacity: .45;
+}
+
+/* =====================================================================
+   THE TOPPINGS
+   Every topping is laid down eight times. The eight copies share eight
+   variations of turn, scale and tone, otherwise the eye reads the
+   copy-paste straight away.
+   ===================================================================== */
+
+.topping {
+  position: absolute;
+  z-index: 2;
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--turn, 0deg))
+    scale(var(--scale, 1));
+  filter: brightness(var(--light, 1));
+}
+
+.topping::before,
+.topping::after {
+  content: '';
+  position: absolute;
+}
+
+.pizza > .topping:nth-child(8n + 1) { --turn: 14deg;  --scale: 1;    --light: 1; }
+.pizza > .topping:nth-child(8n + 2) { --turn: 128deg; --scale: .9;   --light: .94; }
+.pizza > .topping:nth-child(8n + 3) { --turn: 71deg;  --scale: 1.09; --light: 1.05; }
+.pizza > .topping:nth-child(8n + 4) { --turn: 249deg; --scale: .96;  --light: .97; }
+.pizza > .topping:nth-child(8n + 5) { --turn: 192deg; --scale: 1.13; --light: 1.03; }
+.pizza > .topping:nth-child(8n + 6) { --turn: 37deg;  --scale: .87;  --light: .92; }
+.pizza > .topping:nth-child(8n + 7) { --turn: 305deg; --scale: 1.04; --light: 1.07; }
+.pizza > .topping:nth-child(8n + 8) { --turn: 163deg; --scale: .93;  --light: .99; }
+
+/* --- mozzarella: torn, melted into the sauce, blistered by the fire --- */
+
+.topping.mozzarella {
+  width: 16%;
+  height: 14.5%;
+  border-radius: 58% 42% 50% 50% / 46% 55% 45% 54%;
+  background:
+    /* wet shine */
+    radial-gradient(ellipse 22% 13% at 34% 26%, rgba(255,255,255,.9) 0 30%, transparent 75%),
+    radial-gradient(ellipse 10% 6% at 62% 34%, rgba(255,255,255,.7) 0 30%, transparent 80%),
+    radial-gradient(ellipse 2.98% 2.26% at 62.82% 60.67%, rgba(120,74,30,.55) 0 40%, transparent 80%),
+    radial-gradient(ellipse 3.04% 1.85% at 44.83% 65.98%, rgba(120,74,30,.55) 0 40%, transparent 80%),
+    radial-gradient(ellipse 3.34% 3.24% at 59.27% 52.52%, rgba(120,74,30,.55) 0 40%, transparent 80%),
+    radial-gradient(ellipse 12.06% 8.73% at 43.46% 58.72%, rgba(214,160,78,.5) 0 30%, transparent 76%),
+    radial-gradient(ellipse 10.62% 9.33% at 69.04% 59.48%, rgba(214,160,78,.5) 0 30%, transparent 76%),
+    radial-gradient(ellipse 12.85% 15.20% at 44.47% 39.19%, rgba(214,160,78,.5) 0 30%, transparent 76%),
+    radial-gradient(ellipse 8.17% 5.89% at 38.25% 57.00%, rgba(214,160,78,.5) 0 30%, transparent 76%),
+    /* milky white, a little gold where it has run thin */
+    radial-gradient(ellipse 64% 62% at 46% 44%,
+      #fffefa 0 36%,
+      #fcf6e6 58%,
+      #f5e7c2 78%,
+      #ecd29a 92%,
+      #e2bf7c 100%);
+  box-shadow:
+    /* the cheese has run a little into the sauce */
+    0 0 0.35cqmin 0.1cqmin rgba(240,214,160,.55),
+    0 0 1.4cqmin 0.3cqmin rgba(232,120,40,.22),
+    0 0.45cqmin 0.8cqmin rgba(110,40,8,.35),
+    inset 0 -0.7cqmin 1cqmin rgba(200,150,76,.4),
+    inset 0 0.5cqmin 0.7cqmin rgba(255,255,255,.7);
+}
+
+/* a second lobe, so no two pieces keep the same outline */
+.topping.mozzarella::before {
+  z-index: -1;
+  width: 48%;
+  height: 46%;
+  right: -16%;
+  bottom: -6%;
+  border-radius: 52% 48% 60% 40% / 50% 44% 56% 50%;
+  background: radial-gradient(ellipse at 40% 40%, #fbf2dc 0 36%, #efd9a6 70%, #dcb472 100%);
+  box-shadow: 0 0 0.35cqmin 0.1cqmin rgba(240,214,160,.5);
+}
+
+/* --- mushrooms: one slice, cap and stem, cooked in the oil ------------ */
+/* The slice is drawn in ::before and clipped to its outline. The shadow
+   sits on the span itself: a drop-shadow on a clipped element would be
+   clipped away with it. */
+
+.topping.mushrooms {
+  width: 12.5%;
+  height: 11.5%;
+  filter:
+    brightness(var(--light, 1))
+    drop-shadow(0 0.5cqmin 0.7cqmin rgba(60,26,6,.45));
+}
+
+.topping.mushrooms::before {
+  inset: 0;
+  clip-path: polygon(
+    1% 60%, 2% 46%, 6% 32%, 13% 20%, 23% 11%, 36% 4%, 50% 2%, 64% 4%,
+    77% 11%, 87% 20%, 94% 32%, 98% 46%, 99% 60%, 96% 66%, 86% 68%,
+    72% 70%, 67% 74%, 66% 90%, 68% 98%, 60% 100%, 40% 100%, 32% 98%,
+    34% 90%, 33% 74%, 28% 70%, 14% 68%, 4% 66%
+  );
+  background:
+    /* oil on the cap */
+    radial-gradient(ellipse 26% 11% at 38% 17%, rgba(255,248,230,.6) 0 30%, transparent 80%),
+    /* the brown skin, a thin band along the dome */
+    radial-gradient(ellipse 58% 64% at 50% 64%,
+      transparent 0 84%,
+      #8a5d34 88%,
+      #6a4323 94%,
+      #4f3018 100%),
+    /* the gills: darker under the cap, fading towards the stem */
+    radial-gradient(ellipse 50% 12% at 50% 63%, rgba(96,64,36,.55) 0 40%, transparent 100%),
+    radial-gradient(ellipse 18% 7% at 22% 63%, rgba(80,52,28,.5) 0 40%, transparent 100%),
+    radial-gradient(ellipse 18% 7% at 78% 63%, rgba(80,52,28,.5) 0 40%, transparent 100%),
+    /* the stem, a touch paler than the cap */
+    linear-gradient(90deg, transparent 0 33%, rgba(250,240,220,.35) 40% 60%, transparent 67%),
+    /* cooked flesh: cream, turning grey-brown where the oil soaked in */
+    linear-gradient(172deg, #ecdcbb 0%, #dfc9a2 38%, #cdb38a 70%, #bb9d73 100%);
+}
+
+/* the cut face catches the light */
+.topping.mushrooms::after {
+  width: 30%;
+  height: 16%;
+  top: 22%;
+  left: 24%;
+  border-radius: 50%;
+  background: rgba(255,250,236,.3);
+  filter: blur(0.3cqmin);
+}
+
+/* --- olives: black, sliced into rings, glossy ------------------------ */
+
+.topping.olives {
+  width: 9%;
+  height: 8.4%;
+  border-radius: 51% 49% 48% 52% / 50% 52% 48% 50%;
+  background:
+    /* the shine on the skin */
+    radial-gradient(ellipse 28% 14% at 34% 18%, rgba(255,255,255,.75) 0 25%, transparent 80%),
+    radial-gradient(ellipse 12% 8% at 72% 80%, rgba(255,255,255,.35) 0 25%, transparent 80%),
+    /* the ring: the pit's hole, the cut flesh, the skin */
+    radial-gradient(circle closest-side at 50% 50%,
+      transparent 0 37%,
+      #120a0d 39%,
+      #3c262c 43%,
+      #4a3037 50%,
+      #33222a 58%,
+      #1c1216 70%,
+      #120b0e 88%,
+      #070405 100%);
+  filter:
+    brightness(var(--light, 1))
+    drop-shadow(0 0.45cqmin 0.6cqmin rgba(30,10,4,.55));
+}
+
+/* the sauce seen through the hole, a shade darker in the olive's shadow */
+.topping.olives::before {
+  inset: 31%;
+  border-radius: 50%;
+  box-shadow: inset 0 0.4cqmin 0.6cqmin rgba(40,8,4,.6);
+}
+
+/* --- chorizo: marbled with fat, the edge crisped and curled ----------- */
+
+.topping.chorizo {
+  width: 13%;
+  height: 13%;
+  border-radius: 48% 52% 51% 49% / 51% 48% 52% 49%;
+  background:
+    /* a little shine where the fat has rendered */
+    radial-gradient(ellipse 10% 5% at 38% 28%, rgba(255,236,222,.8) 0 30%, transparent 80%),
+    radial-gradient(ellipse 34% 20% at 40% 32%, rgba(255,210,180,.18), transparent 75%),
+    radial-gradient(ellipse 2.12% 1.54% at 56.76% 85.51%, rgba(120,24,10,.42) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.86% 2.45% at 53.51% 19.97%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.14% 2.97% at 44.74% 14.67%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.86% 1.53% at 29.71% 22.74%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.49% 2.22% at 46.46% 67.58%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.08% 2.43% at 66.54% 20.07%, rgba(120,24,10,.42) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.48% 1.59% at 62.21% 78.08%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.11% 2.65% at 14.82% 15.06%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.04% 2.79% at 42.00% 36.50%, rgba(120,24,10,.42) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.53% 2.99% at 57.84% 36.77%, rgba(120,24,10,.42) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.32% 2.06% at 62.74% 24.43%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.74% 2.14% at 59.34% 44.09%, rgba(120,24,10,.42) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.61% 1.04% at 70.49% 54.81%, rgba(120,24,10,.42) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.22% 0.88% at 76.61% 66.25%, rgba(120,24,10,.42) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.54% 1.41% at 56.10% 84.30%, rgba(120,24,10,.42) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.33% 1.93% at 57.33% 78.52%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.42% 1.90% at 37.15% 33.30%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.45% 3.41% at 34.77% 24.13%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.33% 2.67% at 33.72% 75.29%, rgba(120,24,10,.42) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.98% 2.45% at 38.97% 20.12%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 2.58% 2.18% at 70.71% 66.00%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.49% 1.20% at 62.79% 47.50%, rgba(96,16,6,.5) 0 50%, transparent 80%),
+    radial-gradient(ellipse 1.21% 0.96% at 31.55% 68.11%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.75% 3.52% at 65.29% 56.64%, rgba(244,204,184,.7) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.29% 1.95% at 63.65% 60.76%, rgba(250,222,206,.85) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.16% 2.53% at 80.00% 30.42%, rgba(244,204,184,.7) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.29% 2.52% at 31.00% 44.19%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 3.30% 4.34% at 51.39% 62.24%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.38% 3.28% at 71.14% 41.54%, rgba(250,222,206,.85) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.92% 3.97% at 31.09% 28.56%, rgba(244,204,184,.7) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.58% 2.66% at 51.46% 19.68%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 3.19% 3.24% at 50.93% 60.58%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 3.58% 2.67% at 68.40% 46.73%, rgba(250,222,206,.85) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.73% 2.19% at 67.41% 58.66%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.20% 2.06% at 42.38% 13.01%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 1.93% 1.77% at 56.09% 20.30%, rgba(244,204,184,.7) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.31% 1.69% at 87.56% 85.02%, rgba(250,222,206,.85) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.33% 2.44% at 73.53% 60.21%, rgba(244,204,184,.7) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.80% 3.54% at 73.91% 23.12%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.52% 1.76% at 47.58% 34.37%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 1.84% 1.66% at 38.96% 76.65%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.36% 2.93% at 86.70% 63.59%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 1.97% 1.95% at 39.21% 61.73%, rgba(250,222,206,.85) 0 55%, transparent 82%),
+    radial-gradient(ellipse 3.43% 4.40% at 62.10% 39.54%, rgba(250,222,206,.85) 0 55%, transparent 82%),
+    radial-gradient(ellipse 1.98% 2.68% at 18.48% 54.91%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 1.23% 1.67% at 60.12% 13.14%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 1.54% 1.21% at 31.00% 19.71%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 3.37% 4.16% at 38.33% 23.60%, rgba(244,204,184,.7) 0 55%, transparent 82%),
+    radial-gradient(ellipse 3.55% 2.38% at 58.32% 64.29%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.47% 2.95% at 27.00% 64.65%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 1.48% 1.39% at 63.01% 20.89%, rgba(244,204,184,.7) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.36% 3.13% at 47.97% 54.35%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.64% 3.13% at 30.74% 24.51%, rgba(244,204,184,.7) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.55% 2.89% at 75.90% 47.56%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 3.51% 2.31% at 40.50% 43.83%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.66% 3.05% at 60.35% 14.17%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.36% 2.85% at 73.45% 19.14%, rgba(244,204,184,.7) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.70% 2.35% at 14.58% 66.58%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.53% 3.36% at 37.94% 71.17%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.53% 3.19% at 45.07% 44.10%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.00% 2.78% at 38.99% 49.52%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 3.10% 2.68% at 86.10% 61.75%, rgba(252,232,218,.6) 0 55%, transparent 82%),
+    radial-gradient(ellipse 3.53% 2.37% at 66.20% 21.70%, rgba(250,222,206,.85) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.17% 2.30% at 42.31% 54.13%, rgba(236,186,160,.55) 0 55%, transparent 82%),
+    radial-gradient(ellipse 1.66% 2.21% at 34.83% 12.47%, rgba(250,222,206,.85) 0 55%, transparent 82%),
+    radial-gradient(ellipse 2.67% 2.92% at 71.97% 81.15%, rgba(250,222,206,.85) 0 55%, transparent 82%),
+    radial-gradient(ellipse 4.02% 4.87% at 33.90% 59.35%, rgba(246,208,188,.5) 0 35%, transparent 80%),
+    radial-gradient(ellipse 3.96% 2.69% at 59.16% 70.68%, rgba(246,208,188,.5) 0 35%, transparent 80%),
+    radial-gradient(ellipse 4.62% 4.85% at 42.66% 68.07%, rgba(246,208,188,.5) 0 35%, transparent 80%),
+    radial-gradient(ellipse 3.26% 2.01% at 70.30% 32.35%, rgba(246,208,188,.5) 0 35%, transparent 80%),
+    radial-gradient(ellipse 4.68% 5.71% at 49.87% 51.24%, rgba(246,208,188,.5) 0 35%, transparent 80%),
+    radial-gradient(ellipse 4.00% 2.45% at 54.22% 73.44%, rgba(246,208,188,.5) 0 35%, transparent 80%),
+    /* a flat slice: an even red, the rim crisped dark */
+    radial-gradient(circle closest-side at 50% 50%,
+      #ad2f1b 0 60%,
+      #a02917 80%,
+      #922313 90%,
+      #6d180b 96%,
+      #521006 100%);
+  box-shadow:
+    /* the paprika oil it sheds into the sauce */
+    0 0 1.8cqmin 0.5cqmin rgba(226,86,24,.35),
+    0 0.6cqmin 1cqmin rgba(64,16,4,.45),
+    inset 0 0 0.8cqmin rgba(60,10,2,.6),
+    inset 0.3cqmin 0.4cqmin 0.5cqmin rgba(255,190,150,.28);
+}
+
+/* --- rocket: thrown on raw, out of the oven --------------------------- */
+/* Like the mushroom, the leaf is clipped in ::before and the shadow sits
+   on the span. */
+
+.topping.rocket {
+  width: 16%;
+  height: 8.5%;
+  filter:
+    brightness(var(--light, 1))
+    drop-shadow(0 0.7cqmin 0.8cqmin rgba(20,34,8,.5));
+}
+
+/* a deeply lobed leaf, stem on the left, tip on the right */
+.topping.rocket::before {
+  inset: 0;
+  clip-path: polygon(
+    2% 48%, 6% 41%, 10% 43%, 13% 35%, 17% 31%, 21% 36%, 24% 41%,
+    27% 29%, 31% 22%, 35% 25%, 38% 34%, 42% 23%, 47% 15%, 52% 18%,
+    55% 28%, 59% 17%, 64% 11%, 69% 14%, 72% 24%, 76% 15%, 81% 13%,
+    86% 18%, 91% 25%, 96% 34%, 99% 44%, 99% 54%, 96% 64%, 91% 72%,
+    85% 78%, 80% 79%, 76% 72%, 72% 83%, 66% 87%, 61% 84%, 58% 72%,
+    54% 81%, 48% 84%, 44% 79%, 42% 67%, 38% 75%, 33% 77%, 29% 72%,
+    27% 60%, 23% 65%, 18% 66%, 14% 60%, 11% 56%, 7% 58%, 3% 53%
+  );
+  background:
+    /* shine on the leaf */
+    radial-gradient(ellipse 34% 26% at 42% 32%, rgba(236,255,210,.3), transparent 70%),
+    /* fine veins, faint */
+    repeating-linear-gradient(64deg,
+      transparent 0 7%,
+      rgba(190,222,156,.18) 7% 7.6%),
+    /* darker at the lobes' edges, lighter along the middle */
+    radial-gradient(ellipse 60% 44% at 52% 50%, #5c9542 0 30%, #4a8034 60%, #36652a 85%, #2a5220 100%);
+}
+
+/* the midrib and the stem */
+.topping.rocket::after {
+  top: 50%;
+  left: -12%;
+  width: 104%;
+  height: 3.6%;
+  transform: translateY(-50%) rotate(-2deg);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #5b8a3c 0%, #9fc47a 18%, rgba(164,202,126,.75) 62%, rgba(164,202,126,0) 96%);
+}
+
+@media (max-width: 899px) {
+  .board {
+    max-width: 480px;
+    margin-inline: auto;
+  }
+}

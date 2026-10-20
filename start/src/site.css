@@ -1,0 +1,1380 @@
+/* =====================================================================
+   certiPizza - the site
+   Everything the pages share: the tokens (white, TypeScript blue, Space
+   Grotesk for display, Figtree for reading, Cascadia Code for anything
+   typed), the bar, the footer, the colour band, and the building blocks
+   of the inner pages.
+
+   The art direction is TypeScript's own: its blue, its rounded square
+   (the logo, the discs of the mock-up become that square), and the
+   furniture of an editor wherever the site talks about its types.
+
+   The grid comes from the mock-up: at 1504 px wide, content runs from
+   x = 193 to x = 1311. That is 74.3 % of the width, with a cap.
+   ===================================================================== */
+
+:root {
+  /* Abril Fatface has one weight: never fake a bold */
+  font-synthesis-weight: none;
+  /* the one colour of the brand: TypeScript blue. Change these four to
+     re-dress the site. */
+  --primary: #3178c6;
+  --primary-deep: #235a97;
+  --primary-deeper: #1b4a7e;
+  --primary-tint: #eaf2fb;
+  /* --primary is for shapes, big numbers and the hero title (4.5:1 on
+     white, enough for large text). Small text in the brand colour uses
+     --primary-deep (7:1). */
+  --error: #cf2f34;
+  --ink: #0b1c33;
+  --ink-soft: #4b5868;
+  --line: #e2e8f0;
+
+  --display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  /* the big titles only: the hero word, the XL and L section titles */
+  --headline: 'Abril Fatface', Georgia, 'Times New Roman', serif;
+  --sans: Figtree, 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'Cascadia Code', 'JetBrains Mono', ui-monospace, monospace;
+  --figures: var(--display);
+
+  /* the corner of the TypeScript square, as a share of its side */
+  --square: 12.5%;
+
+  --wrap: min(100% - 40px, 1240px);
+  --section: clamp(72px, 8.5vw, 128px);
+  --radius: 6px;
+  --shadow-soft: 0 18px 40px -22px rgba(11, 28, 51, 0.28);
+}
+
+@media (min-width: 700px) {
+  :root {
+    --wrap: min(100% - 80px, 1240px);
+  }
+}
+
+@media (min-width: 1100px) {
+  :root {
+    --wrap: min(74.34vw, 1240px);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #fff;
+  -webkit-text-size-adjust: 100%;
+  /* anchors land below the sticky bar, not under it */
+  scroll-padding-top: 112px;
+}
+
+@media (min-width: 1100px) {
+  html {
+    scroll-padding-top: 80px;
+  }
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+.wrap {
+  width: var(--wrap);
+  margin-inline: auto;
+}
+
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 20;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  background: var(--primary-deep);
+  color: #fff;
+  text-decoration: none;
+}
+
+.skip:focus {
+  top: 12px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* =====================================================================
+   THE BAR
+   At 1504 px it matches the mock-up to the pixel: one unit, --b, is one
+   pixel of the mock-up. Below that width the unit stops shrinking, so
+   the links never get smaller than they are in the design.
+   ===================================================================== */
+
+/* The bar stays at the top while the page scrolls. White and slightly
+   see-through: at the top of the home page it is invisible over the white
+   hero, as in the mock-up; lower down, the page blurs behind it. */
+.bar {
+  container: bar / inline-size;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+}
+
+/* A hairline and a soft shadow appear over the first 64px of scroll.
+   Driven by the scroll itself, no script: browsers without scroll
+   timelines simply keep a flat bar. */
+@supports (animation-timeline: scroll()) {
+  .bar {
+    animation: bar-lift linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 64px;
+  }
+
+  @keyframes bar-lift {
+    to {
+      box-shadow:
+        0 1px 0 rgba(10, 40, 24, 0.08),
+        0 10px 28px -18px rgba(10, 40, 24, 0.32);
+    }
+  }
+}
+
+.bar-inner {
+  --u: calc(100cqw / 1504);
+  --b: max(var(--u), 1px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  padding: 14px 20px;
+}
+
+.bar-logo {
+  display: block;
+  border-radius: 4px;
+}
+
+/* ---------------------------------------------------------------------
+   The logo: the TypeScript square with a slice of pizza where the
+   letters would be, "certi" in the light cut of the hero's second line,
+   "Pizza" in the cut of its title. Sized in em, so one font-size sets it
+   anywhere.
+   --------------------------------------------------------------------- */
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28em;
+  font-family: var(--display);
+  font-size: 22px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.logo-mark {
+  width: 1.08em;
+  height: 1.08em;
+  flex: none;
+  transition: transform 400ms cubic-bezier(.22, .9, .32, 1);
+}
+
+.logo-square {
+  fill: var(--primary);
+}
+
+.logo-slice {
+  fill: #fff;
+}
+
+.logo-crust {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 0.8;
+}
+
+.bar-logo:hover .logo-mark {
+  transform: rotate(-12deg);
+}
+
+.logo-certi {
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.logo-pizza {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.bar-logo {
+  text-decoration: none;
+}
+
+.bar-links {
+  order: 3;
+  display: flex;
+  gap: 22px;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  font-size: 15px;
+  line-height: 1;
+  scrollbar-width: none;
+}
+
+.bar-links a {
+  position: relative;
+  padding-block: 6px;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 160ms ease;
+}
+
+.bar-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms ease;
+}
+
+.bar-links a:hover,
+.bar-links a[aria-current='page'] {
+  color: var(--primary-deep);
+}
+
+.bar-links a:hover::after,
+.bar-links a[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
+/* the workshop page: the one link that is not in the mock-up */
+.bar-links .bar-order {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bar-links .bar-order::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 1.5px;
+  background: var(--primary);
+}
+
+.bar-contact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border: 1px solid var(--primary-deep);
+  border-radius: 7px;
+  color: var(--primary-deep);
+  font-size: 15px;
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.bar-contact:hover,
+.bar-contact[aria-current='page'] {
+  background: var(--primary-deep);
+  color: #fff;
+}
+
+@media (min-width: 1100px) {
+  .bar-inner {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 0;
+    height: calc(58 * var(--b));
+    padding: 0 calc(192 * var(--u)) 0 calc(188 * var(--u));
+  }
+
+  .bar-logo {
+    margin-top: calc(16 * var(--b));
+  }
+
+  /* the cap height of the mock-up's logo: 19 px at 1504 */
+  .bar-logo .logo {
+    font-size: calc(25.5 * var(--b));
+  }
+
+  /* The four links of the mock-up start at x = 661, where they are in
+     the design; the fifth, Order, follows them. */
+  .bar-links {
+    order: 0;
+    width: auto;
+    overflow: visible;
+    gap: calc(23.6 * var(--b));
+    margin: calc(23.4 * var(--b)) auto 0 calc(323 * var(--u));
+    padding: 0;
+    font-size: calc(12.65 * var(--b));
+  }
+
+  .bar-links a {
+    padding-block: 0;
+  }
+
+  .bar-links a::after {
+    bottom: calc(-5 * var(--b));
+  }
+
+  .bar-links .bar-order {
+    gap: calc(5 * var(--b));
+  }
+
+  .bar-links .bar-order::before {
+    width: calc(5 * var(--b));
+    height: calc(5 * var(--b));
+  }
+
+  .bar-contact {
+    margin-top: calc(11 * var(--b));
+    width: calc(90 * var(--b));
+    height: calc(37 * var(--b));
+    min-height: 0;
+    padding: 0;
+    border-width: calc(1 * var(--b));
+    border-radius: calc(7 * var(--b));
+    font-size: calc(14.5 * var(--b));
+  }
+
+  /* on the home page the bar floats over the hero, as in the mock-up,
+     and stays there as the page scrolls */
+  .bar--over {
+    position: fixed;
+    inset: 0 0 auto;
+  }
+}
+
+/* =====================================================================
+   TYPE AND BUTTONS
+   ===================================================================== */
+
+.display {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.display--xl {
+  font-family: var(--headline);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  font-size: clamp(3.4rem, 7.2vw, 7.4rem);
+}
+
+.display--l {
+  font-family: var(--headline);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  font-size: clamp(2.3rem, 4.3vw, 4.1rem);
+}
+
+.display--m {
+  font-size: clamp(1.7rem, 2.6vw, 2.5rem);
+}
+
+/* the second line, in the brand blue, as under "Pizza" in the hero */
+.display-sub {
+  display: block;
+  font-family: var(--display);
+  margin-top: 0.12em;
+  color: var(--primary-deep);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.37vw, 2.3rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.display--l .display-sub {
+  font-size: clamp(1.5rem, 1.7vw, 1.65rem);
+}
+
+/* a type annotation above a title: the page, in the words of the compiler */
+.flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  margin: 0 0 1.1rem;
+  padding: 0.38em 0.8em;
+  border: 1px solid #c3d8f0;
+  border-radius: var(--radius);
+  background: var(--primary-tint);
+  color: var(--primary-deep);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.flag::before {
+  content: '';
+  flex: none;
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 1.5px;
+  background: var(--primary);
+}
+
+.flag code {
+  font: inherit;
+}
+
+.lead {
+  max-width: 34rem;
+  margin: 1.5rem 0 0;
+  font-size: clamp(1rem, 1.15vw, 1.13rem);
+  line-height: 1.6;
+}
+
+.muted {
+  color: var(--ink-soft);
+}
+
+.title-s {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 2rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  border: 1px solid var(--primary-deep);
+  border-radius: var(--radius);
+  background: var(--primary-deep);
+  color: #fff;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 90ms ease;
+}
+
+.button:hover {
+  background: var(--primary-deeper);
+  border-color: var(--primary-deeper);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--primary-deep);
+}
+
+.button--ghost:hover {
+  background: var(--primary-deep);
+  border-color: var(--primary-deep);
+  color: #fff;
+}
+
+.button--light {
+  border-color: #fff;
+  background: #fff;
+  color: var(--primary-deep);
+}
+
+.button--light:hover {
+  background: transparent;
+  border-color: #fff;
+  color: #fff;
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--primary-deep);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.link-arrow::after {
+  content: '→';
+  transition: transform 180ms ease;
+}
+
+.link-arrow:hover::after {
+  transform: translateX(4px);
+}
+
+/* =====================================================================
+   THE PAGE HEAD: words on the left, a pizza on a coloured disc on the right
+   ===================================================================== */
+
+.page-head {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(40px, 6vw, 88px) 0 clamp(56px, 7vw, 104px);
+}
+
+.page-head-grid {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .page-head-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: 32px;
+  }
+}
+
+/* The dish: the TypeScript square, a white plate, the pizza. The square
+   leans out of the frame like the one in the hero. */
+.dish {
+  position: relative;
+  width: min(100%, 520px);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+.dish-disc {
+  position: absolute;
+  left: 34%;
+  top: -6%;
+  width: 112%;
+  aspect-ratio: 1;
+  border-radius: var(--square);
+  background: var(--primary);
+}
+
+.dish-plate {
+  position: absolute;
+  inset: 6%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side, #fff 0 90%, #eef0ef 92.5%, #fff 95%, #f4f5f5 98%, #e2e4e4 100%);
+  box-shadow:
+    -22px 28px 52px -18px rgba(11, 28, 51, 0.28),
+    0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.dish-plate img {
+  width: 88%;
+  border-radius: 50%;
+  transform: rotate(var(--turn, 0deg));
+}
+
+.dish-leaf {
+  position: absolute;
+  width: 16%;
+  pointer-events: none;
+}
+
+.dish-leaf--a {
+  left: -7%;
+  bottom: 4%;
+}
+
+.dish-leaf--b {
+  left: 2%;
+  top: 2%;
+  width: 11%;
+}
+
+@media (min-width: 900px) {
+  .dish {
+    margin-inline: auto 0;
+  }
+}
+
+/* One composition per page: the square moves, the pizza turns. The
+   leaves were cut from white, so they stay off the square. */
+.dish--low .dish-disc {
+  left: 16%;
+  top: 50%;
+  width: 96%;
+}
+
+.dish--low .dish-leaf--a {
+  left: auto;
+  right: -2%;
+  bottom: auto;
+  top: 4%;
+}
+
+.dish--low .dish-leaf--b {
+  left: 8%;
+  top: -2%;
+}
+
+.dish--wide .dish-disc {
+  left: 22%;
+  top: 30%;
+  width: 118%;
+}
+
+.dish--wide .dish-leaf--b {
+  left: 64%;
+  top: -4%;
+}
+
+.dish--small .dish-disc {
+  left: 48%;
+  top: -16%;
+  width: 78%;
+}
+
+/* =====================================================================
+   SECTIONS
+   ===================================================================== */
+
+.section {
+  padding-block: var(--section);
+}
+
+.section--line {
+  border-top: 1px solid var(--line);
+}
+
+.section-head {
+  display: grid;
+  gap: 20px;
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+@media (min-width: 900px) {
+  .section-head {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+    align-items: end;
+    gap: 48px;
+  }
+
+  .section-head .lead {
+    margin: 0;
+  }
+}
+
+.grid-3,
+.grid-2,
+.grid-4 {
+  display: grid;
+  gap: 20px;
+}
+
+@media (min-width: 700px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.card {
+  position: relative;
+  padding: clamp(24px, 2.6vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+
+.card p {
+  margin: 0.75rem 0 0;
+  color: var(--ink-soft);
+}
+
+a.card {
+  display: block;
+  text-decoration: none;
+}
+
+a.card:hover,
+.card--lift:hover {
+  border-color: #a9c7ea;
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-3px);
+}
+
+.card-index {
+  display: block;
+  margin-bottom: 1.5rem;
+  color: var(--primary-deep);
+  font-family: var(--figures);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.card--primary {
+  border-color: var(--primary-deep);
+  background: var(--primary-deep);
+  color: #fff;
+}
+
+.card--primary p {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* the figures: big blue numbers over a short label */
+.figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-block: 1px solid var(--line);
+}
+
+.figure {
+  padding: 28px 20px 28px 0;
+}
+
+.figure + .figure {
+  padding-left: 20px;
+  border-left: 1px solid var(--line);
+}
+
+.figure:nth-child(3) {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.figure:nth-child(n + 3) {
+  border-top: 1px solid var(--line);
+}
+
+.figure-value {
+  display: block;
+  color: var(--primary);
+  font-family: var(--figures);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+  line-height: 1;
+}
+
+.figure-label {
+  display: block;
+  margin-top: 10px;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+@media (min-width: 900px) {
+  .figures {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .figure,
+  .figure:nth-child(3) {
+    padding: 36px 24px;
+    border-left: 1px solid var(--line);
+  }
+
+  .figure:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .figure:nth-child(n + 3) {
+    border-top: 0;
+  }
+}
+
+/* two columns of prose beside a picture */
+.split {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .split {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    gap: clamp(48px, 7vw, 120px);
+  }
+}
+
+.prose p {
+  margin: 1.1rem 0 0;
+  color: var(--ink-soft);
+}
+
+.prose .display {
+  margin-bottom: 0.5rem;
+}
+
+/* two plated pizzas, as at the foot of the hero */
+.plates {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 6%;
+  padding-block: 40px;
+}
+
+.plates img {
+  width: 42%;
+  max-width: 250px;
+}
+
+.plates img:nth-child(2) {
+  margin-top: 18%;
+}
+
+.plates .plates-leaf {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 18%;
+  max-width: 110px;
+  margin: 0;
+}
+
+/* =====================================================================
+   THE COLOUR BAND, before the footer
+   ===================================================================== */
+
+.band {
+  position: relative;
+  overflow: hidden;
+  background: var(--primary);
+  color: #fff;
+}
+
+.band-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 32px;
+  padding-block: clamp(64px, 7vw, 104px);
+}
+
+.band .display,
+.band .display-sub {
+  color: #fff;
+}
+
+.band .lead {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.band-dish {
+  position: absolute;
+  right: -9%;
+  top: 50%;
+  width: clamp(280px, 34vw, 520px);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+}
+
+.band-dish .dish-plate {
+  inset: 0;
+  box-shadow: -26px 26px 60px -20px rgba(6, 30, 64, 0.5);
+}
+
+/* the leaves have no background of their own, so they sit on any colour */
+.band-leaf {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.band-leaf--a { left: 64%; top: 14%; width: 64px; }
+.band-leaf--b { left: 60%; bottom: 12%; width: 42px; }
+
+@media (max-width: 899px) {
+  .band-dish {
+    display: none;
+  }
+
+  .band-leaf--a {
+    left: auto;
+    right: 6%;
+    top: 12%;
+  }
+
+  .band-leaf--b {
+    left: auto;
+    right: 14%;
+    bottom: 8%;
+  }
+}
+
+/* =====================================================================
+   THE FOOTER
+   ===================================================================== */
+
+.footer {
+  padding-top: clamp(56px, 6vw, 88px);
+  font-size: 0.95rem;
+}
+
+.footer-grid {
+  display: grid;
+  gap: 40px;
+}
+
+@media (min-width: 700px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .footer-grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  }
+}
+
+.footer-brand .logo {
+  font-size: 26px;
+}
+
+.footer-brand p {
+  max-width: 18rem;
+  margin: 1rem 0 0;
+  color: var(--ink-soft);
+}
+
+.footer h2 {
+  margin: 0 0 1rem;
+  color: var(--primary-deep);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.footer ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer a {
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.footer a:hover {
+  color: var(--primary-deep);
+}
+
+.footer address {
+  font-style: normal;
+}
+
+.footer-base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: clamp(48px, 5vw, 72px);
+  padding-block: 24px 32px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.footer p {
+  margin: 0.6rem 0 0;
+  color: var(--ink-soft);
+}
+
+/* =====================================================================
+   PRICING
+   ===================================================================== */
+
+.size-card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.size-plate {
+  display: grid;
+  place-items: center;
+  width: 78%;
+  aspect-ratio: 1;
+  margin: 0 auto 1.75rem;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side, #fff 0 90%, #eceeed 92%, #fff 94.5%, #f5f6f6 98%, #e1e3e3 100%);
+  box-shadow: -16px 20px 40px -18px rgba(11, 28, 51, 0.3);
+}
+
+/* the same three diameters as the pizza on the order page */
+.size-plate img {
+  width: var(--d);
+  border-radius: 50%;
+}
+
+.size-card .muted {
+  margin-top: 0.35rem;
+}
+
+.size-price {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  color: var(--primary);
+  font-family: var(--figures);
+  font-weight: 600;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.card p.size-price {
+  color: var(--primary);
+}
+
+.tag {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--primary-deep);
+  color: #fff;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+/* a menu: name, dotted leader, price */
+.menu-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-block: 12px;
+}
+
+.menu-list .leader {
+  flex: 1;
+  border-bottom: 1px dotted #c6d0dc;
+  transform: translateY(-4px);
+}
+
+.menu-list .amount {
+  color: var(--primary-deep);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.menu-list .off {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+}
+
+.menu-note {
+  margin: 1rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.93rem;
+}
+
+.receipt {
+  padding: clamp(24px, 2.6vw, 36px);
+  border-radius: 12px;
+  background: var(--primary-tint);
+}
+
+.receipt .menu-list .leader {
+  border-color: #c3d8f0;
+}
+
+.receipt-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #cfe0f3;
+}
+
+.receipt-total strong {
+  color: var(--primary);
+  font-family: var(--figures);
+  font-weight: 600;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+/* =====================================================================
+   SERVICES
+   ===================================================================== */
+
+.steps {
+  display: grid;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+@media (min-width: 900px) {
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+  }
+}
+
+.steps li {
+  position: relative;
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  font-family: var(--figures);
+  font-weight: 600;
+  font-size: 1.35rem;
+}
+
+/* the thread between the steps */
+@media (min-width: 900px) {
+  .steps li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 72px;
+    right: -24px;
+    top: 28px;
+    border-top: 1px dashed #8fb8e6;
+  }
+}
+
+.steps p {
+  margin: 0.6rem 0 0;
+  color: var(--ink-soft);
+}
+
+.service-card .link-arrow {
+  margin-top: 1.5rem;
+}
+
+/* =====================================================================
+   CONTACT
+   ===================================================================== */
+
+.contact-grid {
+  display: grid;
+  gap: 48px;
+}
+
+@media (min-width: 900px) {
+  .contact-grid {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: clamp(48px, 6vw, 104px);
+    align-items: start;
+  }
+}
+
+.info {
+  display: grid;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.info li {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.info-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 9px;
+  background: var(--primary-tint);
+  color: var(--primary);
+}
+
+.info-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.info h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.info p,
+.info address {
+  margin: 0.25rem 0 0;
+  color: var(--ink-soft);
+  font-style: normal;
+}
+
+.info a {
+  text-decoration: none;
+}
+
+.info a:hover {
+  color: var(--primary-deep);
+}
+
+.hours {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 16px;
+  margin: 0.25rem 0 0;
+  color: var(--ink-soft);
+}
+
+.hours dt {
+  color: var(--ink);
+}
+
+.hours dd {
+  margin: 0;
+}
+
+.form {
+  display: grid;
+  gap: 18px;
+  padding: clamp(24px, 3vw, 44px);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.form-row {
+  display: grid;
+  gap: 18px;
+}
+
+@media (min-width: 700px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.93rem;
+}
+
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #d3dce7;
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(49, 120, 198, 0.22);
+}
+
+.form .button {
+  justify-self: start;
+}
+
+.form-note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,248 @@
+/* =====================================================================
+   certiPizza - the hero
+   Rebuilt from docs/img.png, a 1504 x 840 mock-up. On wide screens every
+   element sits at its exact position in that frame: one design pixel is
+   --u, so the whole composition scales with the width of the page.
+
+   The photographs (the pizzas, the leaves) are cut from the mock-up
+   itself, each at its own position. Everything else is drawn here: the
+   TypeScript square (the mock-up's disc), the lettering and the button. The bar above it is the
+   one every page shares, in site.css.
+   ===================================================================== */
+
+.hero {
+  container: hero / inline-size;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+
+.hero-stage {
+  /* one pixel of the mock-up */
+  --u: calc(100cqw / 1504);
+  position: relative;
+}
+
+.hero img {
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+/* --- the words -------------------------------------------------------- */
+
+.hero-copy {
+  width: var(--wrap);
+  margin-inline: auto;
+  padding-top: 2rem;
+}
+
+.hero-title {
+  margin: 0;
+  color: var(--primary);
+  font-family: var(--headline);
+  font-weight: 400;
+  font-size: clamp(5rem, 24vw, 8rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.hero-title span {
+  display: block;
+  font-family: var(--display);
+  margin-top: 0.12em;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: max(0.264em, 1.5rem);
+  letter-spacing: -0.01em;
+}
+
+.hero-flag {
+  margin-bottom: 1.4rem;
+}
+
+.hero-text {
+  max-width: 28rem;
+  margin: 1.4rem 0 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin-top: 1.9rem;
+  padding: 0 1.5rem;
+  border-radius: var(--radius);
+  background: var(--primary-deep);
+  color: #fff;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 160ms ease, transform 90ms ease;
+}
+
+.hero-cta:hover {
+  background: var(--primary-deeper);
+}
+
+.hero-cta:active {
+  transform: translateY(1px);
+}
+
+/* --- the pictures ----------------------------------------------------- */
+
+.hero .hero-blur,
+.hero .hero-leaf-1,
+.hero .hero-leaf-2 {
+  display: none;
+}
+
+.hero-plates {
+  display: flex;
+  gap: 1rem;
+  width: var(--wrap);
+  margin: 1.5rem auto 0;
+}
+
+.hero-plates img {
+  width: 110px;
+  height: auto;
+}
+
+/* The disc, the big pizza and the leaves around it: one group, placed
+   in its own frame so it can stand alone on a phone. Its origin is the
+   point (640, 150) of the mock-up. */
+.hero-visual {
+  --u: calc(100cqw / 864);
+  position: relative;
+  aspect-ratio: 864 / 690;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.hero-visual > * {
+  position: absolute;
+}
+
+/* fitted to the edge of the disc in the mock-up, at half coverage; the
+   TypeScript square, where the mock-up had a circle */
+.hero-disc {
+  left: calc(310.83 * var(--u));
+  top: calc(17.83 * var(--u));
+  width: calc(740.36 * var(--u));
+  aspect-ratio: 1;
+  border-radius: var(--square);
+  background: var(--primary);
+}
+
+.hero-plate { left: calc(22 * var(--u)); top: calc(30 * var(--u)); width: calc(608 * var(--u)); }
+.hero-leaf-3 { left: calc(591 * var(--u)); top: calc(163 * var(--u)); width: calc(86 * var(--u)); }
+.hero-leaf-4 { left: calc(676 * var(--u)); top: calc(324 * var(--u)); width: calc(45 * var(--u)); }
+.hero-leaf-5 { left: calc(645 * var(--u)); top: calc(484 * var(--u)); width: calc(60 * var(--u)); }
+.hero-leaf-6 { left: calc(485 * var(--u)); top: calc(562 * var(--u)); width: calc(73 * var(--u)); }
+
+/* --- wide screens: the mock-up, to the pixel ------------------------- */
+
+@container hero (min-width: 1100px) {
+  .hero-stage {
+    height: calc(840 * var(--u));
+  }
+
+  .hero-stage > *,
+  .hero-copy > * {
+    position: absolute;
+  }
+
+  .hero-copy {
+    display: contents;
+  }
+
+  .hero .hero-blur {
+    display: block;
+    left: calc(40 * var(--u));
+    top: calc(228 * var(--u));
+    width: calc(162 * var(--u));
+  }
+
+  .hero-flag {
+    left: calc(195 * var(--u));
+    top: calc(200 * var(--u));
+    margin: 0;
+    font-size: calc(13 * var(--u));
+  }
+
+  .hero-title {
+    left: calc(193 * var(--u));
+    top: calc(248.5 * var(--u));
+    font-size: calc(132.9 * var(--u));
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .hero-title span {
+    margin-top: calc(0.2 * var(--u));
+    margin-left: calc(1 * var(--u));
+    font-size: calc(35.6 * var(--u));
+  }
+
+  .hero-text {
+    left: calc(195 * var(--u));
+    top: calc(446.9 * var(--u));
+    width: calc(392 * var(--u));
+    max-width: none;
+    margin: 0;
+    font-size: calc(14.15 * var(--u));
+    line-height: calc(18 * var(--u));
+  }
+
+  .hero-cta {
+    left: calc(195 * var(--u));
+    top: calc(514 * var(--u));
+    width: calc(150 * var(--u));
+    height: calc(45 * var(--u));
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border-radius: calc(6 * var(--u));
+    font-size: calc(15.5 * var(--u));
+  }
+
+  .hero-plates {
+    display: contents;
+  }
+
+  .hero-plates img {
+    position: absolute;
+    top: calc(612 * var(--u));
+    width: calc(143 * var(--u));
+  }
+
+  .hero-plates img:first-child { left: calc(176 * var(--u)); }
+  .hero-plates img:last-child { left: calc(328 * var(--u)); }
+
+  .hero .hero-leaf-1 {
+    display: block;
+    left: calc(17 * var(--u));
+    top: calc(705 * var(--u));
+    width: calc(70 * var(--u));
+  }
+
+  .hero .hero-leaf-2 {
+    display: block;
+    left: calc(118 * var(--u));
+    top: calc(720 * var(--u));
+    width: calc(126 * var(--u));
+  }
+
+  .hero-visual {
+    --u: calc(100cqw / 1504);
+    left: calc(640 * var(--u));
+    top: calc(150 * var(--u));
+    width: calc(864 * var(--u));
+    height: calc(690 * var(--u));
+    margin: 0;
+    aspect-ratio: auto;
+  }
+}

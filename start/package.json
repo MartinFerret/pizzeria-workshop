@@ -1,0 +1,15 @@
+{
+  "name": "certipizza",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "vite": "^5.4.0",
+    "vite-plugin-checker": "^0.9.3"
+  }
+}

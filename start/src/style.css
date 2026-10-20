@@ -1,0 +1,417 @@
+@import url('./pizza.css');
+
+/* =====================================================================
+   certiPizza - the order page
+   The page the room builds in the workshop, dressed like the rest of the
+   site (site.css): white, TypeScript blue, Space Grotesk and Figtree.
+   The slate at the bottom is a dark editor tab. The pizza itself is
+   drawn in pizza.css, on the white plate of the hero.
+
+   Every class below that ui.ts writes is marked. Rename one and the
+   display loses its style, not its logic.
+   ===================================================================== */
+
+.order {
+  padding-bottom: var(--section);
+}
+
+/* ---------------------------------------------------------------------
+   Built for a shared screen: the title gives way so that the menu, the
+   plate, the total and the slate sit together in one viewport, and the
+   text is set a notch larger than on the rest of the site.
+   --------------------------------------------------------------------- */
+
+.page-head--compact {
+  padding: clamp(28px, 3.2vw, 48px) 0 clamp(20px, 2.4vw, 36px);
+}
+
+.page-head--compact .display--xl {
+  font-size: clamp(2.6rem, 4.4vw, 4.2rem);
+}
+
+.page-head--compact .display-sub {
+  font-size: clamp(1.25rem, 1.6vw, 1.6rem);
+}
+
+.page-head--compact .lead {
+  margin-top: 0.9rem;
+}
+
+.page-head--compact .flag {
+  margin-bottom: 0.8rem;
+}
+
+.order-layout {
+  display: grid;
+  gap: clamp(48px, 6vw, 96px);
+}
+
+@media (min-width: 900px) {
+  .order-layout {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   The menu: one group per course
+   --------------------------------------------------------------------- */
+
+.field + .field {
+  margin-top: 2.25rem;
+}
+
+.field h2 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 1rem;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.field h2::after {
+  content: '';
+  order: 1;
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* the property this field writes, in the object on the slate */
+.field h2 .key {
+  order: 2;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  background: var(--primary-tint);
+  color: var(--primary-deep);
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ui.ts: 'option', 'option selected' */
+.option {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, transform 90ms ease;
+}
+
+.option:hover {
+  border-color: var(--primary-deep);
+  color: var(--primary-deep);
+}
+
+.option:active {
+  transform: translateY(1px);
+}
+
+.option.selected {
+  border-color: var(--primary-deep);
+  background: var(--primary-deep);
+  color: #fff;
+}
+
+/* ui.ts: 'price', the tag inside a chip */
+.option .price {
+  margin-left: 0.5em;
+  font-size: 0.86em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+
+.option.selected .price {
+  opacity: 0.85;
+}
+
+/* ui.ts: 'waiting', the gap a piece leaves until main.ts exports it */
+.waiting {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 1.1rem;
+  border: 1px dashed #9cc0e8;
+  border-radius: var(--radius);
+  background: var(--primary-tint);
+  color: var(--primary-deep);
+  font-family: var(--mono);
+  font-size: 0.88rem;
+}
+
+/* step 9: the promo code, typed by the customer */
+.promo-form {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 22rem;
+}
+
+.promo-form input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.97rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.promo-form input::placeholder {
+  color: #a7b2c0;
+}
+
+.promo-form input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-tint);
+}
+
+.promo-note {
+  min-height: 1.5rem;
+  margin: 0.6rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.promo-note.applied {
+  color: var(--primary-deep);
+  font-weight: 500;
+}
+
+/* the topping the compiler turns down: the red squiggle of the editor */
+.pineapple {
+  min-height: 44px;
+  margin-top: 0.75rem;
+  padding: 0 1.1rem;
+  border: 1px dashed #c6d0dc;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.05rem;
+  text-decoration: underline wavy var(--error);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, transform 90ms ease;
+}
+
+.pineapple:hover {
+  border-style: solid;
+  border-color: var(--error);
+  background: #fdf2f2;
+}
+
+.pineapple:active {
+  transform: translateY(1px);
+}
+
+/* ui.ts: 'visible'. Red, like a line in the Problems panel. */
+.compiler-error {
+  min-height: 1.5rem;
+  margin: 0.8rem 0 0;
+  padding-left: 0.85rem;
+  border-left: 3px solid transparent;
+  color: var(--error);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 180ms ease, border-color 180ms ease;
+}
+
+.compiler-error.visible {
+  border-left-color: var(--error);
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------------
+   The pass: the plate on its TypeScript square, the bill, the till
+   --------------------------------------------------------------------- */
+
+.stage {
+  position: relative;
+  padding: 2% 0 2% 2%;
+}
+
+/* the square of the hero, leaning out behind the plate */
+.stage::before {
+  content: '';
+  position: absolute;
+  left: 32%;
+  top: -6%;
+  width: 66%;
+  aspect-ratio: 1;
+  border-radius: var(--square);
+  background: var(--primary);
+}
+
+.stage .board {
+  width: 72%;
+}
+
+.total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.total span:first-child {
+  color: var(--ink-soft);
+  font-size: 1rem;
+}
+
+#price {
+  color: var(--primary);
+  font-family: var(--figures);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.place-order {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 1.25rem;
+  padding: 0 1.2rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--primary-deep);
+  color: #fff;
+  font: inherit;
+  font-size: 1.02rem;
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 90ms ease;
+}
+
+.place-order:hover {
+  background: var(--primary-deeper);
+}
+
+.place-order:active {
+  transform: translateY(1px);
+}
+
+/* closed until step 6 opens the till */
+.place-order:disabled {
+  background: #d5dce5;
+  color: #fff;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* receipts, newest on top */
+.orders {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.orders li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.orders li span:last-child {
+  color: var(--primary-deep);
+  font-weight: 500;
+}
+
+.orders li + li {
+  opacity: 0.7;
+}
+
+.orders li + li + li {
+  opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------------
+   The slate: the object the room is building, written out live, in an
+   editor tab named order.ts. The colours are the editor's dark theme.
+   --------------------------------------------------------------------- */
+
+.slate {
+  margin-top: 1.25rem;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #1e1e1e;
+}
+
+.slate::before {
+  content: 'order.ts';
+  display: block;
+  padding: 0.6rem 1.35rem 0.6rem 2.35rem;
+  border-bottom: 1px solid #3a3a3a;
+  background:
+    linear-gradient(var(--primary), var(--primary)) 1.35rem 50% / 0.7rem 0.7rem no-repeat,
+    #252526;
+  color: #d0d0d0;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+pre {
+  margin: 0;
+  padding: 1.1rem 1.35rem 1.2rem;
+  color: #d4d4d4;
+  font-family: var(--mono);
+  font-size: 1rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  tab-size: 2;
+}
+
+/* ui.ts: the four token classes */
+.keyword {
+  color: #569cd6;
+}
+
+.string {
+  color: #ce9178;
+}
+
+.typename {
+  color: #4ec9b0;
+}
+
+.comment {
+  color: #6a9955;
+  font-style: italic;
+}

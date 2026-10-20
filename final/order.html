@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order · certiPizza</title>
+    <meta name="description" content="A typed order, built one click at a time. The compiler turns down anything that is not on the menu." />
+    <meta name="theme-color" content="#3178c6" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Figtree:wght@300..700&family=Space+Grotesk:wght@400..700&family=Cascadia+Code:wght@400..600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/site.css" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="bar">
+      <div class="bar-inner">
+        <a class="bar-logo" href="index.html" aria-label="certiPizza, home">
+          <span class="logo">
+            <svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true"><rect class="logo-square" width="24" height="24" rx="3"/><path class="logo-slice" fill-rule="evenodd" d="M6.6 17.4 L9.69 6.63 A11.2 11.2 0 0 1 17.37 14.31 Z M8.65 13.6 a1.25 1.25 0 1 0 2.5 0 a1.25 1.25 0 1 0 -2.5 0 Z M11.55 11.4 a1.05 1.05 0 1 0 2.1 0 a1.05 1.05 0 1 0 -2.1 0 Z M11.25 14.6 a0.95 0.95 0 1 0 1.9 0 a0.95 0.95 0 1 0 -1.9 0 Z M8.9 10.9 a0.9 0.9 0 1 0 1.8 0 a0.9 0.9 0 1 0 -1.8 0 Z"/><path class="logo-crust" d="M9.23 8.22 A9.55 9.55 0 0 1 15.78 14.77"/></svg>
+            <span class="logo-word"><span class="logo-certi">certi</span><span class="logo-pizza">Pizza</span></span>
+          </span>
+        </a>
+
+        <nav class="bar-links" aria-label="Main">
+          <a href="about.html">About</a>
+          <a href="pricing.html">Pricing</a>
+          <a href="contact.html">Contact</a>
+          <a href="services.html">Services</a>
+          <a class="bar-order" href="order.html" aria-current="page">Order</a>
+        </nav>
+
+        <a class="bar-contact" href="contact.html">Contact</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="page-head page-head--compact">
+        <div class="wrap">
+          <p class="flag"><code>const order: Order = {</code></p>
+            <h1 class="display display--xl">
+            Order
+            <span class="display-sub">Build Your Pizza</span>
+          </h1>
+          <p class="lead">
+            Every click edits one typed object. The compiler turns down any
+            order that is not on the menu.
+          </p>
+        </div>
+      </section>
+
+      <div class="wrap order">
+        <div class="order-layout">
+          <section aria-label="The menu">
+            <div class="field">
+              <h2>Size <code class="key">size</code></h2>
+              <div class="options" id="sizes"></div>
+            </div>
+
+            <div class="field">
+              <h2>Toppings <code class="key">toppings</code></h2>
+              <div class="options" id="toppings"></div>
+              <button class="pineapple" id="pineapple" type="button">
+                pineapple
+              </button>
+              <p class="compiler-error" id="error" role="status"></p>
+            </div>
+
+            <div class="field">
+              <h2>Extra topping <code class="key">extra</code></h2>
+              <div class="options" id="extra"></div>
+            </div>
+
+            <div class="field">
+              <h2>Service <code class="key">service</code></h2>
+              <div class="options" id="service"></div>
+            </div>
+
+            <div class="field">
+              <h2>Promo code <code class="key">promo</code></h2>
+              <div class="options" id="promo"></div>
+              <p class="promo-note" id="promo-note" role="status"></p>
+            </div>
+          </section>
+
+          <section aria-label="Your order">
+            <div class="stage">
+              <div class="board">
+                <div class="pizza" id="pizza"></div>
+              </div>
+            </div>
+
+            <div class="total">
+              <span>Total</span>
+              <span id="price"></span>
+            </div>
+
+            <button class="place-order" id="place-order" type="button">
+              Place the order
+            </button>
+
+            <ul class="orders" id="orders"></ul>
+
+            <div class="slate">
+              <pre id="code"></pre>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-grid">
+        <div class="footer-brand">
+          <span class="logo">
+          <svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true"><rect class="logo-square" width="24" height="24" rx="3"/><path class="logo-slice" fill-rule="evenodd" d="M6.6 17.4 L9.69 6.63 A11.2 11.2 0 0 1 17.37 14.31 Z M8.65 13.6 a1.25 1.25 0 1 0 2.5 0 a1.25 1.25 0 1 0 -2.5 0 Z M11.55 11.4 a1.05 1.05 0 1 0 2.1 0 a1.05 1.05 0 1 0 -2.1 0 Z M11.25 14.6 a0.95 0.95 0 1 0 1.9 0 a0.95 0.95 0 1 0 -1.9 0 Z M8.9 10.9 a0.9 0.9 0 1 0 1.8 0 a0.9 0.9 0 1 0 -1.8 0 Z"/><path class="logo-crust" d="M9.23 8.22 A9.55 9.55 0 0 1 15.78 14.77"/></svg>
+          <span class="logo-word"><span class="logo-certi">certi</span><span class="logo-pizza">Pizza</span></span>
+          </span>
+          <p>Wood-fired pizza from a short menu, made properly, every time.</p>
+        </div>
+
+        <div>
+          <h2>Pages</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="order.html">Order</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h2>Visit</h2>
+          <address>Via dei Tipi 42<br />80138 Napoli, Italy</address>
+          <p>Tue – Sun<br />12:00 – 15:00 · 18:30 – 23:00</p>
+        </div>
+
+        <div>
+          <h2>Contact</h2>
+          <ul>
+            <li><a href="tel:+390815550142">+39 081 555 0142</a></li>
+            <li><a href="mailto:hello@pizzeria.example">hello@pizzeria.example</a></li>
+            <li><a href="contact.html">Send us a message</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="wrap footer-base">
+        <span>© 2026 certiPizza</span>
+        <span>Baked in Napoli. Typed in TypeScript.</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/app.ts"></script>
+  </body>
+</html>
